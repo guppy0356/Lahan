@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useSuspenseQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { todoApi, type Todo } from './Todo.api';
 
@@ -9,7 +10,7 @@ export function useTodoFacade() {
     queryFn: todoApi.getAll,
   });
 
-  const createMutation = useMutation({
+  const { mutateAsync, isPending: isCreating } = useMutation({
     mutationFn: todoApi.create,
     onSuccess: (newTodo) => {
       queryClient.setQueryData(['todos'], (todos: Todo[] | undefined) => {
@@ -18,17 +19,22 @@ export function useTodoFacade() {
     },
   });
 
-  const handleToggleTodo = (id: number) => {
+  const handleToggleTodo = useCallback((id: number) => {
     queryClient.setQueryData(['todos'], (todos: Todo[] | undefined) => {
       if (!todos) return [];
       return todos.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
     });
-  };
+  }, [queryClient]);
+
+  const handleAddTodo = useCallback(
+    (title: string) => mutateAsync(title),
+    [mutateAsync],
+  );
 
   return {
     todos,
-    addTodo: (title: string) => createMutation.mutateAsync(title),
+    addTodo: handleAddTodo,
     toggleTodo: handleToggleTodo,
-    isCreating: createMutation.isPending,
+    isCreating,
   };
 }
