@@ -1,73 +1,44 @@
-# React + TypeScript + Vite
+# Lahan
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A task management web application built with modern React and TypeScript.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** with TypeScript
+- **Vite** for bundling and dev server
+- **TanStack Router** — file-based routing with auto code-splitting
+- **TanStack Query** — server state management and caching
+- **Tailwind CSS v4** — utility-first styling
 
-## React Compiler
+## Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Available Scripts
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Command           | Description                          |
+| ----------------- | ------------------------------------ |
+| `npm run dev`     | Start dev server with HMR           |
+| `npm run build`   | Type-check and build for production  |
+| `npm run lint`    | Run ESLint                           |
+| `npm run preview` | Preview the production build locally |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Project Structure
+
 ```
+src/
+├── routes/          # File-based routes (auto-discovered by TanStack Router)
+├── features/        # Feature modules
+│   └── <name>/
+│       ├── <Name>.api.ts          # HTTP request functions and domain types
+│       ├── <Name>.facade.ts       # TanStack Query hooks (data fetching, mutations)
+│       ├── <Name>.presenter.ts    # Local UI state, form logic, event handlers
+│       └── <Name>.component.tsx   # Memoized React component (view layer)
+├── styles/          # Global styles (Tailwind CSS)
+└── routeTree.gen.ts # Auto-generated route tree (do not edit)
+```
+
+Each feature follows a four-layer architecture: **API → Facade → Presenter → Component**, keeping data-fetching, UI state, and rendering concerns cleanly separated.
