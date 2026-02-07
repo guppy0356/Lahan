@@ -1,3 +1,9 @@
+---
+name: commit
+description: Stage changes, generate a conventional commit message, commit, and push to the current branch.
+disable-model-invocation: true
+---
+
 # Commit Skill
 1. Run `git diff --staged` (or `git diff` if nothing staged, then stage all)
 2. Analyze the changes and write a clear, conventional commit message
