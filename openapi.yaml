@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: JSONPlaceholder API
+  version: 1.0.0
+servers:
+  - url: https://jsonplaceholder.typicode.com
+
+paths:
+  /todos:
+    get:
+      summary: Get all todos
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+    post:
+      summary: Create a todo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTodoInput'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+
+components:
+  schemas:
+    Todo:
+      type: object
+      properties:
+        userId:
+          type: integer
+        id:
+          type: integer
+        title:
+          type: string
+        completed:
+          type: boolean
+      required:
+        - userId
+        - id
+        - title
+        - completed
+    
+    CreateTodoInput:
+      type: object
+      properties:
+        userId:
+          type: integer
+        title:
+          type: string
+        completed:
+          type: boolean
+      required:
+        - userId
+        - title
