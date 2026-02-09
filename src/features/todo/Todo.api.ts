@@ -1,26 +1,16 @@
-export type Todo = {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-};
+import { apiClient } from '../../api/client';
+import type { components } from '../../api/schema';
 
-const BASE_URL = 'https://jsonplaceholder.typicode.com/todos';
+export type Todo = components['schemas']['Todo'];
+type CreateTodoInput = components['schemas']['CreateTodoInput'];
 
 export const todoApi = {
-  getAll: async (): Promise<Todo[]> => {
-    const res = await fetch(`${BASE_URL}?_limit=8`);
-    if (!res.ok) throw new Error('Failed to fetch todos');
-    return res.json();
-  },
+  getAll: () =>
+    apiClient<Todo[]>('/todos?_limit=8'),
 
-  create: async (title: string): Promise<Todo> => {
-    const res = await fetch(BASE_URL, {
+  create: (title: string) =>
+    apiClient<Todo>('/todos', {
       method: 'POST',
-      body: JSON.stringify({ title, userId: 1, completed: false }),
-      headers: { 'Content-type': 'application/json; charset=UTF-8' },
-    });
-    if (!res.ok) throw new Error('Failed to create todo');
-    return res.json();
-  },
+      body: JSON.stringify({ title, userId: 1, completed: false } satisfies CreateTodoInput),
+    }),
 };
