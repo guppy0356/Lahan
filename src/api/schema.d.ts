@@ -64,6 +64,52 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/todos/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Todo ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update a todo partially */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Todo ID */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["UpdateTodoInput"];
+                };
+            };
+            responses: {
+                /** @description Updated */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Todo"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -77,6 +123,11 @@ export interface components {
         CreateTodoInput: {
             userId: number;
             title: string;
+            completed?: boolean;
+        };
+        UpdateTodoInput: {
+            userId?: number;
+            title?: string;
             completed?: boolean;
         };
     };
