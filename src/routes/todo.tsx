@@ -5,7 +5,7 @@ import { ApiError } from '../api/client'
 import { useTodoFacade } from '../features/todo/Todo.facade'
 import { TodoView } from '../features/todo/Todo.component'
 
-function TodoError({ error, reset }: ErrorComponentProps) {
+function TodoError({ error }: ErrorComponentProps) {
   return (
     <div className="p-8 text-center">
       <p className="text-red-600 font-semibold">
@@ -13,12 +13,6 @@ function TodoError({ error, reset }: ErrorComponentProps) {
           ? `Error ${error.status}: ${error.message}`
           : error.message}
       </p>
-      <button
-        onClick={reset}
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        Retry
-      </button>
     </div>
   );
 }
